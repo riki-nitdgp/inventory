@@ -1,4 +1,4 @@
-package com.inventory.inventoryservice;
+package com.inventory.inventoryService;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
