@@ -24,7 +24,7 @@ public class ProductManager {
     private ProductRepository productRepository;
 
 
-    public Products productById(Integer id) throws NotFoundException {
+    public Products productById(Integer id) {
 
         Optional <Products> products = productRepository.findById(id);
 
@@ -35,7 +35,7 @@ public class ProductManager {
         return products.get();
     }
 
-    public String deleteProductById(Integer id) throws NotFoundException {
+    public String deleteProductById(Integer id) {
 
         Products product = productById(id);
         productRepository.delete(product);
@@ -46,7 +46,7 @@ public class ProductManager {
         return productRepository.save(product);
     }
 
-    public ResponseEntity<Object> allProducts(int pageNo, int pageSize, String sortBy, String sortDir) throws NotFoundException{
+    public ResponseEntity<Object> allProducts(int pageNo, int pageSize, String sortBy, String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);

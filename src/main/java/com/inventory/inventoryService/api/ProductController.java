@@ -22,17 +22,10 @@ public class ProductController {
     @Autowired
     ProductManager productManager;
 
-    @GetMapping("/hello")
-    public ResponseEntity<Object> hello() {
-        Map<String, String> helloWorld = new HashMap<String, String>();
-        helloWorld.put("message", "Hello World");
-
-        return ResponseHandler.generateResponse(helloWorld);
-    }
 
     @GetMapping("/product/{id}")
     public ResponseEntity<Object> getProductById(
-            @NotNull(message = "Product Id is Missing") @PathVariable Integer id ) throws NotFoundException {
+            @NotNull(message = "Product Id is Missing") @PathVariable Integer id )  {
 
         Products product = productManager.productById(id);
         return ResponseHandler.generateResponse(product);
@@ -40,7 +33,7 @@ public class ProductController {
 
     @DeleteMapping("/product/{id}")
     public ResponseEntity<Object> deleteProductById(
-            @NotNull(message = "Product Id is Missing") @PathVariable Integer id ) throws NotFoundException {
+            @NotNull(message = "Product Id is Missing") @PathVariable Integer id ) {
         String result = productManager.deleteProductById(id);
         return ResponseHandler.generateResponse(result);
     }
@@ -58,7 +51,7 @@ public class ProductController {
             @RequestParam(value = "sortBy", defaultValue = Constant.DEFAULT_PRODUCT_SORT_BY, required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = Constant.DEFAULT_SORT_DIRECTION, required = false) String sortDir
 
-    ) throws NotFoundException {
+    ) {
 
         return productManager.allProducts(pageNo, pageSize, sortBy, sortDir);
 
