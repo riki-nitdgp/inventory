@@ -1,6 +1,8 @@
 package com.inventory.inventoryService.exceptions;
 
 import com.inventory.inventoryService.models.ApiError;
+import com.inventory.inventoryService.utils.Constant;
+import com.inventory.inventoryService.utils.ResponseHandler;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.ArrayList;
 import java.util.List;
 
+@RestController
 @ControllerAdvice
 public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -28,21 +31,18 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex,
                                                                    WebRequest request) {
         String error = ex.getName() + " should be of type " + ex.getRequiredType().getName();
-
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
-        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+        return ResponseHandler.generateErrorResponse(ex, HttpStatus.BAD_REQUEST, error);
     }
 
     @ExceptionHandler({NotFoundException.class})
     public ResponseEntity<Object> handleNotFoundException(NotFoundException ex, WebRequest request){
-        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getLocalizedMessage(), "Not Found");
-        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+        return ResponseHandler.generateErrorResponse(ex, HttpStatus.NOT_FOUND, Constant.NOT_FOUND_ERROR_MESSAGE);
     }
 
     @ExceptionHandler({ Exception.class })
     public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
-        ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "Error Occurred");
-        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+        return ResponseHandler.generateErrorResponse(ex, HttpStatus.INTERNAL_SERVER_ERROR,
+                Constant.INTERNAL_SERVER_ERROR);
     }
 
 
@@ -67,19 +67,14 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
                                                                           HttpHeaders headers, HttpStatus status,
                                                                           WebRequest request) {
         String error = ex.getParameterName() + " parameter is missing";
-
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
-        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+        return ResponseHandler.generateErrorResponse(ex, HttpStatus.BAD_REQUEST, error);
     }
 
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(
             NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         String error = "No handler found for " + ex.getHttpMethod() + " " + ex.getRequestURL();
-
-        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, ex.getLocalizedMessage(), error);
-        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+        return ResponseHandler.generateErrorResponse(ex, HttpStatus.NOT_FOUND, error);
     }
-
 
 }
