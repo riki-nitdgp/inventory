@@ -21,25 +21,25 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
+
 @ControllerAdvice
 public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 
 
 
-    @ExceptionHandler({ MethodArgumentTypeMismatchException.class })
+    @ExceptionHandler
     public ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException ex,
                                                                    WebRequest request) {
         String error = ex.getName() + " should be of type " + ex.getRequiredType().getName();
         return ResponseHandler.generateErrorResponse(ex, HttpStatus.BAD_REQUEST, error);
     }
 
-    @ExceptionHandler({NotFoundException.class})
+    @ExceptionHandler
     public ResponseEntity<Object> handleNotFoundException(NotFoundException ex, WebRequest request){
         return ResponseHandler.generateErrorResponse(ex, HttpStatus.NOT_FOUND, Constant.NOT_FOUND_ERROR_MESSAGE);
     }
 
-    @ExceptionHandler({ Exception.class })
+    @ExceptionHandler
     public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
         return ResponseHandler.generateErrorResponse(ex, HttpStatus.INTERNAL_SERVER_ERROR,
                 Constant.INTERNAL_SERVER_ERROR);
@@ -58,8 +58,8 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
             errors.add(error.getObjectName() + ": " + error.getDefaultMessage());
         }
 
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), errors);
-        return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
+        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST.value(), ex.getLocalizedMessage(), errors);
+        return handleExceptionInternal(ex, apiError, headers, HttpStatus.BAD_REQUEST, request);
     }
 
     @Override

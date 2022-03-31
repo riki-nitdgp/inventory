@@ -28,12 +28,12 @@ public class ResponseHandler {
     }
 
     public static ResponseEntity<Object> generateErrorResponse(Exception ex, HttpStatus httpStatus, String error) {
-        ApiError apiError = new ApiError(httpStatus, ex.getMessage(), error);
-        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+        ApiError apiError = new ApiError(httpStatus.value(), ex.getMessage(), error);
+        return new ResponseEntity<Object>(apiError, new HttpHeaders(), httpStatus);
     }
 
     public static ResponseEntity<Object> generateErrorResponse(Exception ex, HttpStatus httpStatus, List errors) {
-        ApiError apiError = new ApiError(httpStatus, ex.getMessage(), errors);
-        return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+        ApiError apiError = new ApiError(httpStatus.value(), ex.getMessage(), errors);
+        return new ResponseEntity<Object>(apiError, new HttpHeaders(), httpStatus);
     }
 }

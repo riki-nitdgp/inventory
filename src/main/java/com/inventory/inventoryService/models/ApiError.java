@@ -9,12 +9,12 @@ import java.util.List;
 
 @Data
 public class ApiError {
-    private HttpStatus status;
+    private Integer status;
     private String message;
     private List<String> errors;
     private boolean isSuccess;
 
-    public ApiError(HttpStatus status, String message, List<String> errors) {
+    public ApiError(Integer status, String message, List<String> errors) {
         super();
         this.status = status;
         this.message = message;
@@ -22,7 +22,7 @@ public class ApiError {
         this.isSuccess = false;
     }
 
-    public ApiError(HttpStatus status, String message, String error) {
+    public ApiError(Integer status, String message, String error) {
         super();
         this.status = status;
         this.message = message;
