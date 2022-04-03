@@ -12,6 +12,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=inventory_service_pass
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - OTEL_RESOURCE_ATTRIBUTES=service.name=inventory-service
+      - OTEL_PROPAGATORS=b3
     ports:
       - 8009:8009
 
