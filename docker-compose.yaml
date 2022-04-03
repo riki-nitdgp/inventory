@@ -6,29 +6,14 @@ services:
     build:
       context: .
     container_name: inventory-service-container
-    depends_on:
-      - db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/inventory_service_db
+      - SPRING_DATASOURCE_URL=jdbc:h2:mem:rating_review_service_db
       - SPRING_DATASOURCE_USERNAME=inventory_service_user
-#      - SPRING_DATASOURCE_PASSWORD=inventory_service_pass
+      - SPRING_DATASOURCE_PASSWORD=inventory_service_pass
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - OTEL_RESOURCE_ATTRIBUTES=service.name=inventory-service
     ports:
       - 8009:8009
 
-  db:
-    image: postgres:latest
-    container_name: postgres
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
-    environment:
-      - POSTGRES_USER=inventory_service_user
-      - POSTGRES_DB=
-      - POSTGRES_PASSWORD=inventory_service_password
 
-volumes:
-  postgres-data:
 
