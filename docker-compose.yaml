@@ -7,7 +7,7 @@ services:
       context: .
     container_name: inventory-service-container
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:h2:mem:rating_review_service_db
+      - SPRING_DATASOURCE_URL=jdbc:h2:mem:inventory_service_db
       - SPRING_DATASOURCE_USERNAME=inventory_service_user
       - SPRING_DATASOURCE_PASSWORD=inventory_service_pass
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
